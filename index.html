@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!--
-      OK, name your slides:
-    -->
-    <title>SlidePack template</title>
+    <title>ES6, Babel & React</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--
-    Ubuntu font FTW. Remove this comment to use it (if present, SlidePack will
-    use this font for headings).
-
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic' rel='stylesheet' type='text/css'>
-    -->
-
-    <!-- SlidePack basic stylesheets and theme -->
     <link rel="stylesheet" type="text/css" href="slide-pack.min.css">
+
+    <style>
+      .warning {
+        background: red;
+      }
+    </style>
   </head>
   <body>
 
@@ -24,25 +19,460 @@
 
 --
 
-# FRONTPAGE
+# ES6, Babel & React
 
 --
 
-# First slide
+# ES2015, Babel & React
+--
 
-Write your stuff using markdown.
+Who we are
+(pending LOL)
 
 --
 
-# Second slide
+# Disclaimer
+
+Esta charla es para gente que sepa JavaScript
 
 --
 
-# etc.
+Objetivos
+
+* Introducción a las nuevas features de ES2015
+* Ver cómo usarlas hoy (LOL)
+* Introuducir React (Librería de UI) // Porque gran aprte de las app son para el navegador
 
 --
 
-# FIN
+# `let` y `const`
+
+## Mutable vs inmutable
+
+```javascript
+let counter = 0;
+counter++ // This is fine
+
+const PI = 3.14;
+PI++ // This is not fine
+```
+
+-- warning
+
+# `let` y `const`
+
+## Mutable vs inmutable
+
+
+```javascript
+const john = { age: 25 };
+jhon.age++ // No problem! Ups!
+
+jhon = { age: 99 }; // This is not fine;
+```
+
+
+--
+# `let` y `const`
+
+## var: function scope y hoisting
+
+```
+if (true) {
+  var a = 1;
+}
+
+console.log(a) // 1
+```
+
+--
+
+# `let` y `const`
+
+## var: function scope y hoisting
+
+```
+var a;
+
+if (true) {
+  a = 1;
+}
+
+console.log(a) // 1
+```
+
+--
+
+# `let` y `const`
+
+## Block scope
+
+
+```javascript
+if (true) {
+  let a = 1;
+}
+
+console.log(a) // undefined
+
+```
+
+--
+
+# Arrow functions
+
+## syntactic sugar
+
+```javascript
+const square = function(n) {
+  return n * n;
+}
+
+const square = (n) => {
+  return n * n;
+}
+
+const square = (n) => n * n;
+
+const square = n => n * n;
+```
+
+--
+
+lexical scoping
+
+
+var john = {
+  name: "John",
+  age: 25,
+
+  greeter() {
+    return function() {
+      return "Hello I'm " + this.name
+   }
+  }
+}
+
+var greet = john.greeter();
+
+greet(); // "Hello I'm "
+
+var john = {
+  name: "John",
+  age: 25,
+
+  greeter: function() {
+    return function() {
+      return "Hello I'm " + this.name
+   }
+  }
+}
+
+var greet = john.greeter();
+
+greet.call(john); // "Hello I'm John"
+
+
+var john = {
+  name: "John",
+  age: 25,
+
+  greeter: function() {
+    var that = this;
+    return function() {
+      return "Hello I'm " + that.name
+   }
+  }
+}
+
+var greet = john.greeter();
+
+greet(); // "Hello I'm John"
+
+var john = {
+  name: "John",
+  age: 25,
+
+  greeter: function() {
+    return function() {
+      return "Hello I'm " + this.name
+   }.bind(this);
+  }
+}
+
+var greet = john.greeter();
+
+greet(); // "Hello I'm John"
+
+
+
+const john = {
+  name: "John",
+  age: 25,
+
+  greeter: function() {
+    return () => "Hello I'm " + this.name;
+  }
+}
+
+var greet = john.greeter();
+
+greet(); // "Hello I'm John"
+
+
+--
+
+Syntactic sugar
+
+const john = {
+  // ..
+
+  greeter() {
+    // ...
+  }
+}
+
+
+--
+
+String templates
+
+
+"Hello I'm " + this.name
+
+`Hello I'm ${this.name}`
+
+--
+
+Destructuring
+
+var arr = [1, 2, 3, 4];
+var a = arr[0];
+var b = arr[1];
+var c = arr[2];
+var d = arr[3];
+
+const [a, b, c, d] = [1, 2, 3, 4];
+
+function reverse(array) {
+  const [head, ...tail] = array;
+  if (tail.length === 0) {
+    return [head];
+  } else {
+    return [...reverse(tail), head];
+  }
+}
+
+
+
+
+var john = {
+  name: {
+    first: "John",
+    last: "Doe"
+  },
+  age: 25
+}
+
+var first = john.name.first;
+var last = john.name.last;
+var age = john.age;
+
+const { name: {first, last}, age } = john;
+
+
+
+--
+
+Parámetros
+
+function sum() {
+  var numbers = Array.prototype.slice.apply(arguments);
+  return numbers.reduce(function(a,n) {
+    return  a + n;
+  });
+}
+
+
+function sum(...numbers) {
+  return numbers.reduce((a,n) => a + n);
+}
+
+function volume(radius, height) {
+  return 3.14 * radius * radius * height;
+}
+
+volume(cylinder.height, cylinder.radius) // Ups!
+
+
+function volume({radius, height}) {
+  return 3.14 * radius * radius * height;
+}
+
+volume(cylinder)
+
+
+function join(words, separator) {
+  separator = separator || ",";
+  returns words.join(separator);
+}
+
+function join(words, separator = ",") {
+  returns words.join(separator);
+}
+
+--
+
+Clases
+
+function Human(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+Human.prototype.becomeOlder = function() {
+  this.age += 1;
+}
+
+var john = new Human("John", 25);
+
+
+class Human {
+
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  becomeOlder() {
+    this.age += 1;
+  }
+}
+
+const john = new Human("John", 25);
+
+--
+
+Promesas
+
+
+fetch("/stock_values.json").then(
+    response => response.json()
+  ).then(
+    values => values.filter( v => v > 100 )
+  ).then(
+    highValues => console.log(highValues)
+  ).error(
+    () => console.err("Something went wrong");
+  );
+
+
+const loadImage = (src) => {
+  return new Promise(resolve, reject) {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => resolve(img);
+  }
+}
+
+loadImage("awesome_flying_melon.png";).then(
+  image => document.getElementById("#wrapper").appendChild(image)
+);
+
+
+--
+
+Módulos
+
+
+--
+
+Más cosas
+
+* Más syntactic sugar
+* Clases: super y métodos estáticos
+* Símbolos
+
+
+REFERENCIAS
+
+
+--
+
+Babel
+
+Babel playground
+
+npm  y usarlo directamente
+
+Babel polyfill, generedores, por ejemplo.
+
+Módulos ES6.
+
+Webpack.
+
+
+
+--
+
+# El futuro: ES7
+
+ algunas features
+
+--
+
+React
+
+* Filosofía UI = f(estado)
+* Virtual DOM
+* Stateless -> Stateful
+
+
+Hello world
+
+What the <Fuck/> (que es JSX)
+
+Hello work sin JSX
+
+
+
+Hello Pepe -> vía props
+
+Funciones vs clases.
+
+Estado!
+
+Hello pepe con checkbox de "informal mode", -> Sup Pepe! (sin estado no cambia), con estado cambia.
+
+* Children
+
+
+Otras mierdas:
+
+* Ciclo de vida
+* Contexto
+
+
+--
+
+React native. Mencionarlo.
+
+
+
+--
+
+Next chapter: dealing with the model.
+
+* Flux
+* Redux
+
+--
+
+# ¿Preguntas?
+
+--
+
+GIF DE DESPEDIDA DE JAKE O ALGO MOLÓN
 
 </textarea>
 
