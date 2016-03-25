@@ -50,6 +50,7 @@ Objetivos
 ## Mutable vs inmutable
 
 ```javascript
+// ES6
 let counter = 0;
 counter++ // This is fine
 
@@ -65,6 +66,7 @@ PI++ // This is not fine
 
 
 ```javascript
+// ES6
 const john = { age: 25 };
 jhon.age++ // No problem! Ups!
 
@@ -78,6 +80,7 @@ jhon = { age: 99 }; // This is not fine;
 ## var: function scope y hoisting
 
 ```
+// ES5
 if (true) {
   var a = 1;
 }
@@ -92,6 +95,7 @@ console.log(a) // 1
 ## var: function scope y hoisting
 
 ```
+// ES5
 var a;
 
 if (true) {
@@ -109,6 +113,7 @@ console.log(a) // 1
 
 
 ```javascript
+// ES6
 if (true) {
   let a = 1;
 }
@@ -124,6 +129,7 @@ console.log(a) // undefined
 ## syntactic sugar
 
 ```javascript
+// ES6
 const square = function(n) {
   return n * n;
 }
@@ -139,40 +145,60 @@ const square = n => n * n;
 
 --
 
-lexical scoping
+# Arrow functions
 
+## lexical scoping
 
-var john = {
-  name: "John",
-  age: 25,
-
-  greeter() {
-    return function() {
-      return "Hello I'm " + this.name
-   }
-  }
-}
-
-var greet = john.greeter();
-
-greet(); // "Hello I'm "
-
+```javascript
+// ES5 not binded
 var john = {
   name: "John",
   age: 25,
 
   greeter: function() {
     return function() {
-      return "Hello I'm " + this.name
+      return "Hello I am " + this.name
    }
   }
 }
 
 var greet = john.greeter();
 
-greet.call(john); // "Hello I'm John"
+greet(); // "Hello I am "
+```
 
+--
 
+# Arrow functions
+
+## lexical scoping
+
+```javascript
+// ES5 invocation binding
+var john = {
+  name: "John",
+  age: 25,
+
+  greeter: function() {
+    return function() {
+      return "Hello I am " + this.name
+   }
+  }
+}
+
+var greet = john.greeter();
+
+greet.call(john); // "Hello I am John"
+```
+
+--
+
+# Arrow functions
+
+## lexical scoping
+
+```javascript
+// ES5 closure
 var john = {
   name: "John",
   age: 25,
@@ -180,50 +206,68 @@ var john = {
   greeter: function() {
     var that = this;
     return function() {
-      return "Hello I'm " + that.name
+      return "Hello I am " + that.name
    }
   }
 }
 
 var greet = john.greeter();
 
-greet(); // "Hello I'm John"
+greet(); // "Hello I am John"
+```
 
+--
+
+# Arrow functions
+
+## lexical scoping
+
+```javascript
+// ES5 explicit bind
 var john = {
   name: "John",
   age: 25,
 
   greeter: function() {
     return function() {
-      return "Hello I'm " + this.name
+      return "Hello I am " + this.name
    }.bind(this);
   }
 }
 
 var greet = john.greeter();
 
-greet(); // "Hello I'm John"
+greet(); // "Hello I am John"
+```
 
+--
 
+# Arrow functions
 
+## lexical scoping
+
+```javascript
+// ES6
 const john = {
   name: "John",
   age: 25,
 
   greeter: function() {
-    return () => "Hello I'm " + this.name;
+    return () => "Hello I am " + this.name;
   }
 }
 
 var greet = john.greeter();
 
-greet(); // "Hello I'm John"
-
+greet(); // "Hello I am John"
+```
 
 --
 
-Syntactic sugar
+# Más syntactic sugar
 
+```javascript
+// ES6
 const john = {
   // ..
 
@@ -231,29 +275,42 @@ const john = {
     // ...
   }
 }
-
-
---
-
-String templates
-
-
-"Hello I'm " + this.name
-
-`Hello I'm ${this.name}`
+```
 
 --
 
-Destructuring
+# String templates
 
+```javascript
+// ES5
+"Hello I am " + this.name
+
+// ES6
+`Hello I am ${this.name}`
+```
+
+--
+
+# Array destructuring
+
+```javascript
+// ES5
 var arr = [1, 2, 3, 4];
 var a = arr[0];
 var b = arr[1];
 var c = arr[2];
 var d = arr[3];
 
+// ES6
 const [a, b, c, d] = [1, 2, 3, 4];
 
+```
+--
+
+# Array splatting
+
+```javascript
+// ES6 splatting
 function reverse(array) {
   const [head, ...tail] = array;
   if (tail.length === 0) {
@@ -262,10 +319,13 @@ function reverse(array) {
     return [...reverse(tail), head];
   }
 }
+```
 
+--
 
+# Object destructuring
 
-
+```javascript
 var john = {
   name: {
     first: "John",
@@ -274,57 +334,78 @@ var john = {
   age: 25
 }
 
+// ES5
 var first = john.name.first;
 var last = john.name.last;
 var age = john.age;
 
+// ES6
 const { name: {first, last}, age } = john;
-
-
+```
 
 --
 
-Parámetros
+# Parámetros opcionales
 
+```javascript
+// ES5
 function sum() {
   var numbers = Array.prototype.slice.apply(arguments);
   return numbers.reduce(function(a,n) {
-    return  a + n;
+    return a + n;
   });
 }
 
-
+// ES6
 function sum(...numbers) {
-  return numbers.reduce((a,n) => a + n);
+  return numbers.reduce((a, n) => a + n);
 }
+```
 
+--
+
+# Parámetros nombrados
+
+```javascript
+// ES5
 function volume(radius, height) {
   return 3.14 * radius * radius * height;
 }
 
-volume(cylinder.height, cylinder.radius) // Ups!
+volume(cylinder.height, cylinder.radius); // Ups!
 
-
+// ES6
 function volume({radius, height}) {
   return 3.14 * radius * radius * height;
 }
 
-volume(cylinder)
-
-
-function join(words, separator) {
-  separator = separator || ",";
-  returns words.join(separator);
-}
-
-function join(words, separator = ",") {
-  returns words.join(separator);
-}
+volume(cylinder);
+```
 
 --
 
-Clases
+# Valores por defecto
 
+```javascript
+
+// ES5
+function join(words, separator) {
+  separator = separator || ",";
+  return words.join(separator);
+}
+
+// ES6
+function join(words, separator = ",") {
+  return words.join(separator);
+}
+```
+
+--
+
+# Clases
+
+```javascript
+// ES5
 function Human(name, age) {
   this.name = name;
   this.age = age;
@@ -335,10 +416,15 @@ Human.prototype.becomeOlder = function() {
 }
 
 var john = new Human("John", 25);
+```
 
+--
 
+# Clases
+
+```javascript
+// ES6
 class Human {
-
   constructor(name, age) {
     this.name = name;
     this.age = age;
@@ -350,35 +436,44 @@ class Human {
 }
 
 const john = new Human("John", 25);
+```
 
 --
 
-Promesas
+# Promesas
 
-
+```javascript
+// ES6
 fetch("/stock_values.json").then(
     response => response.json()
   ).then(
-    values => values.filter( v => v > 100 )
+    values => values.filter(v => v > 100)
   ).then(
     highValues => console.log(highValues)
   ).error(
-    () => console.err("Something went wrong");
+    () => console.err("Something went wrong")
   );
+```
 
+--
 
+# Promesas
+
+```javascript
+// ES6
 const loadImage = (src) => {
-  return new Promise(resolve, reject) {
+  return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = src;
     img.onload = () => resolve(img);
-  }
+  });
 }
 
-loadImage("awesome_flying_melon.png";).then(
-  image => document.getElementById("#wrapper").appendChild(image)
+loadImage("awesome_flying_melon.png").then(
+  image => document.getElementById("#wrapper")
+    .appendChild(image)
 );
-
+```
 
 --
 
