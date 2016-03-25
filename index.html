@@ -45,6 +45,17 @@ Objetivos
 
 --
 
+# ES2015, ES2016...
+
+## Una spec por año
+## stage-0, 1, 2, 3 y 4
+
+-- section
+
+# ES6
+
+--
+
 # `let` y `const`
 
 ## Mutable vs inmutable
@@ -477,82 +488,302 @@ loadImage("awesome_flying_melon.png").then(
 
 --
 
-Módulos
+# Módulos
 
+```javascript
+
+export const PI=3.14;
+
+export function sqrt(x) { //... };
+
+export default const operations = {
+  PI: PI,
+  sqrt: sqrt
+};
+
+```
 
 --
 
-Más cosas
+# Más syntactic sugar
 
-* Más syntactic sugar
-* Clases: super y métodos estáticos
+```javascript
+// my-math.js
+export const PI=3.14;
+
+export function sqrt(x) { //... };
+
+export default const operations = {
+  PI,
+  sqrt
+};
+
+```
+
+--
+
+# Módulos
+
+```javascript
+import {PI} from "my-math";
+console.log(PI); // 3.14
+
+import operations from "my-math";
+console.log(operation.sqrt(4)); // 2
+
+import {srqrt as root2} from "my-math";
+console.log(root2(4)); // 2
+
+import * as myAwesomeMath from "my-math";
+console.log(myAwesomeMath.sqrt(4); // 2
+console.log(myAwesomeMath.PI); // 3.14
+
+```
+--
+
+# Más cosas
+
+* Clases: extends/super y get/set
 * Símbolos
+* Generadores y async/await
+* (Weak)Maps, (Weak)Sets
 
 
-REFERENCIAS
+// BUSCAR REFERENCIAS
 
 
 --
 
-Babel
+# Soporte en navegadores
+
+-- section
+
+# BABEL
+
+--
+
+ Imagen logo babel
+
+--
+
+# Babel
+
+
+* Qué es ...
+
+--
 
 Babel playground
 
-npm  y usarlo directamente
+--
 
-Babel polyfill, generedores, por ejemplo.
+```
+$ npm install babel
+$ babel ...
+```
 
-Módulos ES6.
+--
 
-Webpack.
+Babel polyfill
 
+```
+$ npm install babel-polyfill
 
+// In your code
+import "babel-polyfill";
+```
+
+--
+
+What abotu Módulos ES6.
+
+Webpack + ES 6.
+
+Imagen logo webpack
+
+```
+Basic webpack config
+
+```
 
 --
 
 # El futuro: ES7
 
- algunas features
+```
+// ES7 stage-2
+const { name, age, ...rest } = john;
+
+console.log(name); // John
+console.log(age); // 25
+console.log(rest); // { id: "12345", favColor: "red" }
+
+const mary = { ...john, name: "Mary" };
+
+```
+
+-- section
+
+# React
 
 --
 
-React
+# React
 
-* Filosofía UI = f(estado)
+## Filosofía
+
+* Librería de UI
+* UI = f(estado)
 * Virtual DOM
-* Stateless -> Stateful
+* Uniderectional data flow
 
+--
 
-Hello world
+# Componentes stateless
 
-What the <Fuck/> (que es JSX)
+```javascript
+import React from "react";
+import {render} from "react-dom";
 
-Hello work sin JSX
+const HelloWorld = () => <p>Hello world!</p>;
 
+render(
+  <HelloWorld/>,
+  document.getElementById("app")
+);
 
+```
+--
 
-Hello Pepe -> vía props
+# What the &amp;lt;Fuck/&amp;gt; !?
 
-Funciones vs clases.
+--
 
-Estado!
+# JSX (syntactic sugar)
 
-Hello pepe con checkbox de "informal mode", -> Sup Pepe! (sin estado no cambia), con estado cambia.
+```javascript
+import React from "react";
+import {render} from "react-dom";
 
-* Children
+const HelloWorld = () => React.DOM.p(null, "Hello world!");
 
+render(
+  React.createElement(HelloWorld),
+  document.getElementById("app")
+);
 
-Otras mierdas:
+```
+
+--
+
+# Virtual DOM
+
+Buscar una representaación gráfica del virtual DOM y el diffing
+
+--
+
+# Props
+
+```javascript
+import React from "react";
+import {render} from "react-dom";
+
+const HelloWorld = (props) => <p>Hello {props.name}!</p>;
+
+render(
+  <HelloWorld name="John"/>,
+  document.getElementById("app")
+);
+
+```
+
+--
+
+# Funciones vs clases
+
+```javascript
+import React from "react";
+import {render} from "react-dom";
+
+class HelloWorld extends React.Component {
+  render() {
+    return <p>Hello {this.props.name}!</p>;
+  }
+}
+
+render(
+  <HelloWorld name="John"/>,
+  document.getElementById("app")
+);
+
+```
+
+--
+
+# <a class="jsbin-embed" href="http://jsbin.com/dixitubaco/embed?js,output">¡Estado!</a><script src="http://static.jsbin.com/js/embed.min.js?3.35.11"></script>
+
+```javascript
+class HelloWorld extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { casual: props.casual };
+    this.toggleStyle = this.toggleStyle.bind(this);
+  }
+
+  toggleStyle() {
+    this.setState({ casual: !this.state.casual });
+  }
+
+  render() {
+    const greeting = this.state.casual ? "Wasap" : "Hello";
+    return <p onClick={this.toggleStyle}>{greeting} {this.props.name}!</p>;
+  }
+}
+
+render(
+  <HelloWorld name="John" casual={false}/>,
+  document.getElementById("app")
+);
+
+```
+--
+
+# Children
+
+```javascript
+const Emphasis = ({children}) => {
+  return (
+    <div>
+      WOOOOOOOOWWWWW!!!
+      {children}
+      WWAAAAAAAWWWAAAAAAAAAA!!!
+    </div>
+  );
+}
+
+render(
+  <Emphasis>
+    <HelloWorld name="John" casual={false}/>
+  </Emphasis>,
+  document.getElementById("app")
+);
+
+```
+
+--
+
+Otros temas:
 
 * Ciclo de vida
 * Contexto
-
+* JSX quirks
+* propTypes
 
 --
 
-React native. Mencionarlo.
+# React native
 
-
+## Mencionarlo.
 
 --
 
