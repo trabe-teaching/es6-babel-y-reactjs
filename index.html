@@ -11,9 +11,18 @@
       .warning {
         background: red;
       }
+
+     #custom section {
+       justify-content: inherit;
+       padding-top: 5%;
+     }
+
+     #custom ul {
+       list-style-position: outside;
+     }
     </style>
   </head>
-  <body>
+  <body id="custom">
 
 <textarea data-slide-pack>
 
@@ -37,11 +46,11 @@ Esta charla es para gente que sepa JavaScript
 
 --
 
-Objetivos
+# Objetivos
 
 * Introducción a las nuevas features de ES2015
 * Ver cómo usarlas hoy (LOL)
-* Introuducir React (Librería de UI) // Porque gran aprte de las app son para el navegador
+* Introducir React (Librería de UI) // Porque gran parte de las app son para el navegador
 
 --
 
@@ -140,6 +149,11 @@ console.log(a) // undefined
 ## syntactic sugar
 
 ```javascript
+//ES5
+var square = function(n) {
+  return n * n;
+}
+
 // ES6
 const square = function(n) {
   return n * n;
@@ -200,6 +214,8 @@ var john = {
 var greet = john.greeter();
 
 greet.call(john); // "Hello I am John"
+
+greet.call({ name: "Mary" }); // "Hello I am Mary"
 ```
 
 --
@@ -225,6 +241,8 @@ var john = {
 var greet = john.greeter();
 
 greet(); // "Hello I am John"
+
+greet.call({ name: "Mary" }); // "Hello I am John"
 ```
 
 --
@@ -249,6 +267,8 @@ var john = {
 var greet = john.greeter();
 
 greet(); // "Hello I am John"
+
+greet.call({ name: "Mary" }); // "Hello I am John"
 ```
 
 --
@@ -271,21 +291,8 @@ const john = {
 var greet = john.greeter();
 
 greet(); // "Hello I am John"
-```
 
---
-
-# Más syntactic sugar
-
-```javascript
-// ES6
-const john = {
-  // ..
-
-  greeter() {
-    // ...
-  }
-}
+greet.call({ name: "Mary" }); // "Hello I am John"
 ```
 
 --
@@ -386,7 +393,7 @@ function volume(radius, height) {
 volume(cylinder.height, cylinder.radius); // Ups!
 
 // ES6
-function volume({radius, height}) {
+function volume({ radius, height }) {
   return 3.14 * radius * radius * height;
 }
 
@@ -451,6 +458,21 @@ const john = new Human("John", 25);
 
 --
 
+# Más syntactic sugar
+
+```javascript
+// ES6
+class Human = {
+  // ..
+
+  becomeOlder() { ... }
+
+  // same as: becomeOlder: function() { ... }
+}
+```
+
+--
+
 # Promesas
 
 ```javascript
@@ -491,10 +513,10 @@ loadImage("awesome_flying_melon.png").then(
 # Módulos
 
 ```javascript
-
+// my-math.js
 export const PI=3.14;
 
-export function sqrt(x) { //... };
+export function sqrt(x) { ... };
 
 export default const operations = {
   PI: PI,
@@ -511,7 +533,7 @@ export default const operations = {
 // my-math.js
 export const PI=3.14;
 
-export function sqrt(x) { //... };
+export function sqrt(x) { ... };
 
 export default const operations = {
   PI,
@@ -548,13 +570,20 @@ console.log(myAwesomeMath.PI); // 3.14
 * Generadores y async/await
 * (Weak)Maps, (Weak)Sets
 
+https://github.com/DrkSephy/es6-cheatsheet
 
-// BUSCAR REFERENCIAS
+https://babeljs.io/docs/learn-es2015/
 
 
 --
 
 # Soporte en navegadores
+
+## _evergreen browsers FTW_
+
+## _mobile browsers FTL_
+
+https://kangax.github.io/compat-table/es6/
 
 -- section
 
@@ -562,23 +591,40 @@ console.log(myAwesomeMath.PI); // 3.14
 
 --
 
- Imagen logo babel
+![](https://cms-assets.tutsplus.com/uploads/users/16/posts/24511/preview_image/babel-1.png)
+
+https://babeljs.io
 
 --
 
 # Babel
 
+## Un compilador de JS a JS
 
-* Qué es ...
+```javascript
+// ES6 goes in...
+
+const hi = name => console.log(`Hello, ${name}`)
+
+// ...ES5 comes out
+
+"use strict";
+
+var hi = function hi(name) {
+  return console.log("Hello, " + name);
+};
+```
 
 --
 
-Babel playground
+# Babel playground
+
+https://babeljs.io/repl/
 
 --
 
 ```
-$ npm install babel
+$ npm install babel babel-cli
 $ babel ...
 ```
 
