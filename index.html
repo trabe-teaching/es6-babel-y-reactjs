@@ -49,7 +49,7 @@
      #custom .disclaimer {
        align-items: center;
        padding-top: 0;
-       background: #b00;
+       background: #00BB6D;
        justify-content: center;
      }
 
@@ -99,9 +99,9 @@ asis@trabsoluciones.com
 
 -- disclaimer
 
-# DISCLAIMER
+## Pregunta
 
-## Esta charla es para gente que sepa JavaScript
+# ¿Cuánto sabéis de JavaScript?
 
 funciones, prototipos, hoisting, closures, bindings, etc, etc.
 
@@ -109,15 +109,18 @@ funciones, prototipos, hoisting, closures, bindings, etc, etc.
 
 # OBJETIVOS
 
-## Introducción a las nuevas features de ES2015
-## Ver cómo usarlas hoy (LOL)
-## Introducir React (Librería de UI, porque gran parte de las app son para el navegador)
+## Introducir las features de ES2015
+## Ver cómo usarlas hoy
+## Introducir React
+
+
+<!--(Librería de UI, porque gran parte de las app son para el navegador) -->
 
 --
 
 # ECMASCRIPT
 
-## ES2015, ES2016...
+## ES5, ES2015, ES2016...
 ## Una spec por año
 ## stage-0, 1, 2, 3 y 4
 
@@ -144,7 +147,7 @@ const PI = 3.14;
 PI++ // This is not fine
 ```
 
--- warning
+--
 
 # `let` y `const`
 
@@ -248,7 +251,7 @@ var john = {
 
   greeter: function() {
     return function() {
-      return "Hello I am " + this.name
+      return "Hello I am " + this.name;
    }
   }
 }
@@ -272,7 +275,7 @@ var john = {
 
   greeter: function() {
     return function() {
-      return "Hello I am " + this.name
+      return "Hello I am " + this.name;
    }
   }
 }
@@ -325,7 +328,7 @@ var john = {
 
   greeter: function() {
     return function() {
-      return "Hello I am " + this.name
+      return "Hello I am " + this.name;
    }.bind(this);
   }
 }
@@ -396,7 +399,9 @@ const [a, b, c, d] = [1, 2, 3, 4];
 ```javascript
 // ES6 splatting
 function reverse(array) {
+
   const [head, ...tail] = array;
+
   if (tail.length === 0) {
     return [head];
   } else {
@@ -451,6 +456,12 @@ function sum(...numbers) {
 # Parámetros nombrados
 
 ```javascript
+
+var cylinder = {
+  radius: 0.5,
+  height: 3
+};
+
 // ES5
 function volume(radius, height) {
   return 3.14 * radius * radius * height;
@@ -539,6 +550,34 @@ class Human = {
 
 --
 
+# Clases
+
+
+```javascript
+
+class Animal {
+  constructor(name, legs) {
+    this.name = name;
+    this.legs = legs;
+  }
+}
+
+class Dog extends Animal {
+  constructor(name) {
+    super(name, 4);
+  }
+}
+
+class Dolphin extends Animal {
+  constructor(name) {
+    super(name, 0);
+  }
+}
+
+```
+
+--
+
 # Promesas
 
 ```javascript
@@ -584,7 +623,7 @@ export const PI=3.14;
 
 export function sqrt(x) { ... };
 
-export default const operations = {
+export default const math = {
   PI: PI,
   sqrt: sqrt
 };
@@ -601,7 +640,7 @@ export const PI=3.14;
 
 export function sqrt(x) { ... };
 
-export default const operations = {
+export default const math = {
   PI,
   sqrt
 };
@@ -616,8 +655,8 @@ export default const operations = {
 import {PI} from "my-math";
 console.log(PI); // 3.14
 
-import operations from "my-math";
-console.log(operation.sqrt(4)); // 2
+import math from "my-math";
+console.log(math.sqrt(4)); // 2
 
 import {srqrt as root2} from "my-math";
 console.log(root2(4)); // 2
@@ -694,7 +733,7 @@ $ babel input.js -o output.js
 ```javascript
 // .babelrc
 {
-  presets: ["es2015", "stage-0", "react"]
+  presets: ["es2015"]
 }
 ```
 
@@ -712,6 +751,8 @@ $ babel-node
 --
 
 # Babel polyfill
+
+## Soporte provisional para navegador
 
 ```shell
 $ npm install babel-polyfill
@@ -768,7 +809,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ["", ".css", ".scss", ".js", ".jsx"],
+    extensions: ["", ".js", ".jsx"],
   }
 }
 ```
@@ -815,10 +856,10 @@ http://eslint.org/
 
 --
 
-# El futuro: ES7
+# El futuro: ES2016
 
 ```
-// ES7 stage-2
+// ES2016 stage-2
 const { name, age, ...rest } = john;
 
 console.log(name); // John
@@ -848,7 +889,7 @@ https://facebook.github.io/react/
 
 --
 
-# Componentes stateless
+# Componentes
 
 ```javascript
 import React from "react";
@@ -981,7 +1022,7 @@ render(
 
 --
 
-Otros temas:
+# Otros temas
 
 * Ciclo de vida
 * Contexto
@@ -999,11 +1040,11 @@ https://facebook.github.io/react-native/
 # React native
 
 ```javascript
-import React from "react-native");
+import React from "react-native";
 const { DrawerLayoutAndroid, ProgressBarAndroid, Text } = React;
 
-const App = React.createClass({
-  render: function() {
+class App extends React.Component {
+  render() {
     return (
       <DrawerLayoutAndroid
         renderNavigationView={() => <Text>React Native</Text>}>
@@ -1011,7 +1052,7 @@ const App = React.createClass({
       </DrawerLayoutAndroid>
     );
   }
-});
+}
 ```
 
 --
@@ -1020,8 +1061,12 @@ const App = React.createClass({
 
 ## La M del MVC
 
+* Unidirectional data flow
 * Flux
 * Redux
+
+## Miércoles 6 de abril
+
 
 -- image
 
