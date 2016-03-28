@@ -8,9 +8,6 @@
     <link rel="stylesheet" type="text/css" href="slide-pack.min.css">
 
     <style>
-      .warning {
-        background: red;
-      }
 
      #custom section {
        justify-content: inherit;
@@ -20,48 +17,117 @@
      #custom ul {
        list-style-position: outside;
      }
+
+     #custom .cover {
+       padding-top: 0;
+       justify-content: center;
+       background: #0074D9;
+       align-items: flex-start;
+       text-align: left;
+     }
+
+     #custom .cover h1 {
+       color: #fff;
+       font-size: 250%;
+       font-weight: 700;
+       margin-left: calc(50% - 2em);
+     }
+
+     #custom .who {
+       padding-top: 0;
+       justify-content: center;
+     }
+
+     #custom .who strong {
+       font-size: 120%;
+     }
+
+     #custom .who p {
+        text-align: center;
+     }
+
+     #custom .disclaimer {
+       align-items: center;
+       padding-top: 0;
+       background: #b00;
+       justify-content: center;
+     }
+
+     #custom .disclaimer h1 {
+       font-weight: 700;
+     }
+
+     #custom .disclaimer * {
+       color: #fff;
+     }
+
+     #custom .warning {
+        background: red;
+     }
+
+     #custom .image {
+       background: #fff;
+     }
     </style>
   </head>
   <body id="custom">
 
 <textarea data-slide-pack>
 
+-- cover
+
+# ES6<br/>Babel</br>React
+
+-- cover
+
+# ES2015<br/>Babel</br>React
+
+-- who
+
+**David Barral**  
+david@trabesoluciones.com  
+@davidbarral
+
+**Román Coedo**  
+roman@trabesoluciones.com  
+@rcoedo
+
+**Asís García**  
+asis@trabsoluciones.com  
+@asischao
+
+
+-- disclaimer
+
+# DISCLAIMER
+
+## Esta charla es para gente que sepa JavaScript
+
+funciones, prototipos, hoisting, closures, bindings, etc, etc.
+
 --
 
-# ES6, Babel & React
+# OBJETIVOS
+
+## Introducción a las nuevas features de ES2015
+## Ver cómo usarlas hoy (LOL)
+## Introducir React (Librería de UI, porque gran parte de las app son para el navegador)
 
 --
 
-# ES2015, Babel & React
---
+# ECMASCRIPT
 
-Who we are
-(pending LOL)
-
---
-
-# Disclaimer
-
-Esta charla es para gente que sepa JavaScript
-
---
-
-# Objetivos
-
-* Introducción a las nuevas features de ES2015
-* Ver cómo usarlas hoy (LOL)
-* Introducir React (Librería de UI) // Porque gran parte de las app son para el navegador
-
---
-
-# ES2015, ES2016...
-
+## ES2015, ES2016...
 ## Una spec por año
 ## stage-0, 1, 2, 3 y 4
 
--- section
+--
 
-# ES6
+# ES2015
+
+## el artista antes conocido como ES6
+
+http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
 
 --
 
@@ -585,13 +651,9 @@ https://babeljs.io/docs/learn-es2015/
 
 https://kangax.github.io/compat-table/es6/
 
--- section
-
-# BABEL
-
 --
 
-![](https://cms-assets.tutsplus.com/uploads/users/16/posts/24511/preview_image/babel-1.png)
+![](./assets/babel.png)
 
 https://babeljs.io
 
@@ -622,34 +684,133 @@ var hi = function hi(name) {
 https://babeljs.io/repl/
 
 --
+# Babel
 
+```shell
+$ npm install babel babel-cli babel-preset-es2015
+$ babel input.js -o output.js
 ```
-$ npm install babel babel-cli
-$ babel ...
+
+```javascript
+// .babelrc
+{
+  presets: ["es2015", "stage-0", "react"]
+}
 ```
 
 --
+# Babel
 
-Babel polyfill
-
+```shell
+$ babel-node
+> (x => 2*x)(4)
+8
+>
 ```
-$ npm install babel-polyfill
 
+
+--
+
+# Babel polyfill
+
+```shell
+$ npm install babel-polyfill
+```
+
+```javascript
 // In your code
 import "babel-polyfill";
 ```
 
 --
 
-What abotu Módulos ES6.
+![](./assets/webpack.png)
 
-Webpack + ES 6.
+https://webpack.github.io/
 
-Imagen logo webpack
+--
+
+# Webpack
+
+```shell
+$ webpack --config webpack.config.dev.js --watch
+$ webpack --config webpack.config.prod.js
 
 ```
-Basic webpack config
 
+--
+
+```javascript
+// webpack.config.dev.js
+module.exports = {
+  entry: "./main.js",
+
+  output: {
+    path: __dirname + "dist/"),
+    filename: "bundle.js"
+  },
+
+  module: {
+    preLoaders: [
+      {
+        test: /\.jsx?$/, exclude: /node_modules/, loader: "eslint"
+      }
+    ],
+
+    loaders: [
+      {
+        test: /\.jsx?$/, exclude: /node_modules/, loader: "babel",
+        query: {
+          presets: ["es2015", "stage-0", "react"]
+        }
+      }
+    ]
+  },
+
+  resolve: {
+    extensions: ["", ".css", ".scss", ".js", ".jsx"],
+  }
+}
+```
+
+--
+
+![](./assets/eslint.png)
+
+http://eslint.org/
+
+--
+
+```
+{
+  "parser": "babel-eslint",
+
+    "plugins": [ "react" ],
+
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+
+    "settings": {
+      "ecmascript": 6,
+      "jsx": true
+    },
+
+    "rules": {
+      "brace-style": [2, "1tbs", { "allowSingleLine": true }],
+      "camelcase": [2, {"properties": "always"}],
+      "react/jsx-no-undef": 2,
+      // ...
+    },
+
+    "ecmaFeatures": {
+      "modules": true,
+      "arrowFunctions": true,
+      "jsx": true
+      // ...
+    }
+}
 ```
 
 --
@@ -668,9 +829,11 @@ const mary = { ...john, name: "Mary" };
 
 ```
 
--- section
+--
 
-# React
+![](./assets/react.png)
+
+https://facebook.github.io/react/
 
 --
 
@@ -827,20 +990,44 @@ Otros temas:
 
 --
 
-# React native
+![](./assets/react_native.png)
 
-## Mencionarlo.
+https://facebook.github.io/react-native/
 
 --
 
-Next chapter: dealing with the model.
+# React native
+
+```javascript
+import React from "react-native");
+const { DrawerLayoutAndroid, ProgressBarAndroid, Text } = React;
+
+const App = React.createClass({
+  render: function() {
+    return (
+      <DrawerLayoutAndroid
+        renderNavigationView={() => <Text>React Native</Text>}>
+        <ProgressBarAndroid />
+      </DrawerLayoutAndroid>
+    );
+  }
+});
+```
+
+--
+
+# En el próximo capítulo
+
+## La M del MVC
 
 * Flux
 * Redux
 
---
+-- image
 
 # ¿Preguntas?
+
+![](./assets/questions.jpg)
 
 --
 
